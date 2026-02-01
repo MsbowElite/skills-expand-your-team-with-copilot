@@ -24,7 +24,7 @@ A FastAPI-based web application that allows students to view and sign up for ext
 - **Backend**: FastAPI with Uvicorn server
 - **Database**: MongoDB for persistent data storage
 - **Frontend**: Vanilla JavaScript, HTML, and CSS
-- **Authentication**: Password hashing with SHA-256 for teacher accounts
+- **Authentication**: Teacher login system with password verification
 
 ## API Endpoints
 
