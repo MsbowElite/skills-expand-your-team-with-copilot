@@ -499,11 +499,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Format the schedule using the new helper function
     const formattedSchedule = formatSchedule(details);
 
-    // Create shareable URL and text for social sharing
-    const shareUrl = encodeURIComponent(window.location.href);
-    const shareText = encodeURIComponent(`Check out ${name} at Mergington High School! ${details.description}`);
-    const shareTitle = encodeURIComponent(name);
-
     // Create activity tag
     const tagHtml = `
       <span class="activity-tag" style="background-color: ${typeInfo.color}; color: ${typeInfo.textColor}">
@@ -635,7 +630,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function handleSocialShare(platform, activityName, activityDetails) {
     const currentUrl = window.location.href;
     const shareText = `Check out ${activityName} at Mergington High School! ${activityDetails.description}`;
-    const formattedSchedule = formatSchedule(activityDetails);
     
     let shareUrl;
     
@@ -650,6 +644,7 @@ document.addEventListener("DOMContentLoaded", () => {
         shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`;
         break;
       case 'email':
+        const formattedSchedule = formatSchedule(activityDetails);
         const emailSubject = `Check out ${activityName} at Mergington High School`;
         const emailBody = `${shareText}\n\nSchedule: ${formattedSchedule}\n\nLearn more: ${currentUrl}`;
         shareUrl = `mailto:?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
@@ -662,7 +657,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (platform === 'email') {
       window.location.href = shareUrl;
     } else {
-      window.open(shareUrl, '_blank', 'width=600,height=400');
+      window.open(shareUrl, '_blank', 'noopener,noreferrer');
     }
   }
 
