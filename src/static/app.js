@@ -650,14 +650,24 @@ document.addEventListener("DOMContentLoaded", () => {
       const slotHour = parseInt(slotParts[0].split(":")[0]);
       const slotPeriod = slotParts[1];
       
-      const slot24Hour = slotPeriod === "PM" && slotHour !== 12 ? slotHour + 12 : 
-                         slotPeriod === "AM" && slotHour === 12 ? 0 : slotHour;
+      // Convert slot time to 24-hour format for comparison
+      const slot24Hour = convertTo24Hour(slotHour, slotPeriod);
       
       if (hour < slot24Hour || (hour === slot24Hour && minute === 0)) {
         return Math.max(0, i);
       }
     }
     return timeSlots.length - 1;
+  }
+
+  // Helper function to convert 12-hour time to 24-hour format
+  function convertTo24Hour(hour, period) {
+    if (period === "PM" && hour !== 12) {
+      return hour + 12;
+    } else if (period === "AM" && hour === 12) {
+      return 0;
+    }
+    return hour;
   }
 
   // Helper function to create calendar header
@@ -673,16 +683,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const activityEl = document.createElement("div");
     activityEl.className = "calendar-activity";
     
+    // Constants for positioning
+    const BASE_HEIGHT = 60;
+    const MARGIN_OFFSET = 8;
+    const LEFT_POSITION_OFFSET = 2;
+    
     // Calculate height based on duration
-    const baseHeight = 60;
-    const height = baseHeight * duration - 8; // -8 for margins
+    const height = BASE_HEIGHT * duration - MARGIN_OFFSET;
     activityEl.style.height = `${height}px`;
     activityEl.style.top = "4px";
     
     // Handle overlapping activities
     if (totalActivities > 1) {
       const width = 100 / totalActivities;
-      const left = (width * index) + 2;
+      const left = (width * index) + LEFT_POSITION_OFFSET;
       activityEl.style.width = `calc(${width}% - 4px)`;
       activityEl.style.left = `${left}%`;
     }
